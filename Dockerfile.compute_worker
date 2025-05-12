@@ -1,22 +1,30 @@
 FROM --platform=linux/amd64 python:3.9
 
-# This makes output not buffer and return immediately, nice for seeing results in stdout
 ENV PYTHONUNBUFFERED 1
 
-# Install Docker
-RUN apt-get update && curl -fsSL https://get.docker.com | sh
+# Install Docker CLI
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    lsb-release \
+    apt-transport-https \
+    ca-certificates \
+    && curl -fsSL https://get.docker.com | sh
 
+# OPTIONAL: sanity check Docker installed correctly
+RUN docker --version
 
+# Install Poetry
 RUN curl -sSL https://install.python-poetry.org | python3 - --version 1.8.3
-# Poetry location so future commands (below) work
 ENV PATH $PATH:/root/.local/bin
-# Want poetry to use system python of docker container
 RUN poetry config virtualenvs.create false
 RUN poetry config virtualenvs.in-project false
-COPY ./compute_worker/pyproject.toml ./
-COPY ./compute_worker/poetry.lock ./
+
+# Install dependencies
+COPY ./compute_worker/pyproject.toml ./compute_worker/poetry.lock ./
 RUN poetry install
 
+# Copy code
 ADD compute_worker .
 
 CMD celery -A compute_worker worker \
