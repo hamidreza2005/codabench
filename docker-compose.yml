@@ -1,4 +1,3 @@
-version: '3'
 services:
   #-----------------------------------------------
   #   Web Services
@@ -211,10 +210,10 @@ services:
           memory: 256M
 
   compute_worker:
-    command: bash -c "watchmedo auto-restart -p '*.py' --recursive -- celery -A compute_worker worker -l info -Q compute-worker -n compute-worker@%n --concurrency=2"
+    command: bash -c "watchmedo auto-restart -p '*.py' --recursive -- celery -A compute_worker worker -l info -Q compute-worker -n compute-worker@%n --concurrency=15"
     working_dir: /app
     deploy:
-      replicas: 4
+      replicas: 5
     restart: unless-stopped
     build:
       context: .
