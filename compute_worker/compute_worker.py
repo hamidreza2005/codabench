@@ -356,6 +356,7 @@ class Run:
         self._update_submission(data)
 
     def _get_container_image(self, image_name):
+        return
         logger.info("Running pull for image: {}".format(image_name))
         retries, max_retries = (0, 3)
         while retries < max_retries:
@@ -632,6 +633,7 @@ class Run:
         engine_cmd = [
             CONTAINER_ENGINE_EXECUTABLE,
             'run',
+            '--pull=never'
             # Remove it after run
             '--rm',
             f'--name={self.ingestion_container_name if kind == "ingestion" else self.program_container_name}',
