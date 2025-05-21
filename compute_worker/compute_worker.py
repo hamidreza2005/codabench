@@ -633,7 +633,7 @@ class Run:
         engine_cmd = [
             CONTAINER_ENGINE_EXECUTABLE,
             'run',
-            '--pull=never'
+            ' --pull=never '
             # Remove it after run
             '--rm',
             f'--name={self.ingestion_container_name if kind == "ingestion" else self.program_container_name}',
