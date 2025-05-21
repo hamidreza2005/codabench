@@ -633,9 +633,9 @@ class Run:
         engine_cmd = [
             CONTAINER_ENGINE_EXECUTABLE,
             'run',
-            ' --pull=never '
             # Remove it after run
             '--rm',
+            '--pull=never'
             f'--name={self.ingestion_container_name if kind == "ingestion" else self.program_container_name}',
 
             # Don't allow subprocesses to raise privileges
